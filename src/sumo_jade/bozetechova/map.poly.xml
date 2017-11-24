@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 11/24/17 14:36:48 by SUMO polyconvert Version 0.31.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/polyconvertConfiguration.xsd">
+
+    <input>
+        <net-file value=".\map.net.xml"/>
+        <osm-files value=".\map.osm"/>
+        <type-file value=".\typemap.xml"/>
+    </input>
+
+    <output>
+        <output-file value="map.poly.xml"/>
+    </output>
+
+    <processing>
+        <poi-layer-offset value="5"/>
+    </processing>
+
+</configuration>
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <location netOffset="-325426.58,-5404460.76" convBoundary="-0.00,0.00,162.07,78.53" origBoundary="18.624136,48.768672,18.626320,48.769379" projParameter="+proj=utm +zone=34 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"/>
+
+</additional>

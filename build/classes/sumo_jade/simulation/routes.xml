@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<routes>
+  <route id="s1" edges="gneE0 gneE5 gneE9" arrivalPos="-1"/>
+  <route id="s2" edges="gneE10 gneE11" arrivalPos="-1"/>  
+</routes>
