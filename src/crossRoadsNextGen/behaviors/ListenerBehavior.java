@@ -11,24 +11,7 @@ import java.util.logging.Logger;
 public class ListenerBehavior extends CyclicBehaviour {
 
     private CrossAgent crossagent;
-
-    private final String stateJ1_1 = "rrGGrrrrGg";
-    private final String stateJ1_2 = "rryyrrrryg";
-    private final String stateJ1_3 = "rrrrrrrrrG";
-    private final String stateJ1_4 = "rrrrrrrrry";
-    private final String stateJ1_5 = "GgrrGGGgrr";
-    private final String stateJ1_6 = "ygrryyygrr";
-    private final String stateJ1_7 = "rGrrrrrGrr";
-    private final String stateJ1_8 = "ryrrrrryrr";
-
-    private final String stateJ3_1 = "GGGgrrrGGGgrrr";
-    private final String stateJ3_2 = "yyygrrryyygrrr";
-    private final String stateJ3_3 = "rrrGrrrrrrGrrr";
-    private final String stateJ3_4 = "rrryrrrrrryrrr";
-    private final String stateJ3_5 = "rrrrGGgrrrrGGg";
-    private final String stateJ3_6 = "rrrryygrrrryyg";
-    private final String stateJ3_7 = "rrrrrrGrrrrrrG";
-    private final String stateJ3_8 = "rrrrrryrrrrrry";
+    private boolean defaultBehavior = false;
 
     @Override
     public void action() {
@@ -43,7 +26,9 @@ public class ListenerBehavior extends CyclicBehaviour {
             // Parse message
             crossagent.timestep(Integer.parseInt(msg.getContent()));
             try {
-                updateLights();
+                if (!defaultBehavior) {
+                    updateLights();
+                }
             } catch (Exception ex) {
                 Logger.getLogger(ListenerBehavior.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -52,9 +37,9 @@ public class ListenerBehavior extends CyclicBehaviour {
 
     private void updateLights() throws Exception {
         if ("gneJ1".equals(crossagent.getId())) {
-            crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", stateJ1_1));
+            crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_CROSS_GREEN.toString()));
         } else if ("gneJ3".equals(crossagent.getId())) {
-            crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", stateJ3_1));
+            crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_GREEN.toString()));
         }
     }
 }

@@ -70,4 +70,16 @@ public class CrossAgent extends Agent {
     public String getId() {
         return id;
     }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void resetDuration() {
+        this.duration = 0;
+    }
+
+    public void incrementDuration() {
+        this.duration++;
+    }
 }

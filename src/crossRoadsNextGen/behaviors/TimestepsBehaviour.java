@@ -9,13 +9,22 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TimestepsBehaviour extends CyclicBehaviour {
 
     private WorldAgent worldagent;
-
+    private final String[] vehicles = {"car", "car", "car", "car", "car", "car", "car", "car", "motorcycle", "motorcycle", "bus",
+        "bus", "truck"};
+    private final String[] westDirections = {"west_north", "west_north_2", "west_south", "west_south_2", "west_east"};
+    private final String[] northDirections = {"north_south", "north_south_2", "north_north", "north_east"};
+    private final String[] north2Directions = {"north_2_east", "north_2_north", "north_2_south", "north_2_south_2"};
+    private final String[] southDirections = {"south_north", "south_north_2", "south_south", "south_east"};
+    private final String[] south2Directions = {"south_2_north", "south_2_north_2", "south_2_south", "south_2_east"};
+    private final String[] eastDirections = {"east_north", "east_north_2", "east_south", "east_south_2"};
+    private final Random rand = new Random();
     private int index = 0;
 
     @Override
@@ -30,7 +39,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
             simtime = (int) worldagent.getConn().do_job_get(Simulation.getCurrentTime());
 
             System.out.println("NEW STEP: " + simtime);
-            
+
             informAgents(simtime);
             generateCars(simtime);
 
@@ -74,8 +83,44 @@ public class TimestepsBehaviour extends CyclicBehaviour {
      * Generate new cars into intersection
      */
     private void generateCars(int simtime) throws Exception {
-        worldagent.getConn().do_job_set(Vehicle.add("veh" + index, "car", "s1", simtime, 0, 13.8, (byte) 1));
-        worldagent.getConn().do_job_set(Vehicle.add("veh-" + index, "car", "s2", simtime, 0, 13.8, (byte) 1));
+        int route, vehicle;
+        if (Math.random() < 0.5) {
+            route = rand.nextInt(westDirections.length);
+            vehicle = rand.nextInt(vehicles.length);
+            worldagent.getConn().do_job_set(Vehicle.add("veh-w-" + index, vehicles[vehicle], westDirections[route], simtime, 0, 13.8,
+                    (byte) 1));
+        }
+        if (Math.random() < 0.5) {
+            route = rand.nextInt(northDirections.length);
+            vehicle = rand.nextInt(vehicles.length);
+            worldagent.getConn().do_job_set(Vehicle.add("veh-n-" + index, vehicles[vehicle], northDirections[route], simtime, 0, 13.8,
+                    (byte) 1));
+        }
+        /*
+        if (Math.random() < 0.2) {
+            route = rand.nextInt(north2Directions.length);
+            vehicle = rand.nextInt(vehicles.length);
+            worldagent.getConn().do_job_set(Vehicle.add("veh-n2-" + index, vehicles[vehicle], north2Directions[route], simtime, 0, 13.8,
+                    (byte) 1));
+        }*/
+        if (Math.random() < 0.5) {
+            route = rand.nextInt(southDirections.length);
+            vehicle = rand.nextInt(vehicles.length);
+            worldagent.getConn().do_job_set(Vehicle.add("veh-s-" + index, vehicles[vehicle], southDirections[route], simtime, 0, 13.8,
+                    (byte) 1));
+        }
+        if (Math.random() < 0.4) {
+            route = rand.nextInt(south2Directions.length);
+            vehicle = rand.nextInt(vehicles.length);
+            worldagent.getConn().do_job_set(Vehicle.add("veh-s2-" + index, vehicles[vehicle], south2Directions[route], simtime, 0, 13.8,
+                    (byte) 1));
+        }
+        if (Math.random() < 0.7) {
+            route = rand.nextInt(eastDirections.length);
+            vehicle = rand.nextInt(vehicles.length);
+            worldagent.getConn().do_job_set(Vehicle.add("veh-e-" + index, vehicles[vehicle], eastDirections[route], simtime, 0, 13.8,
+                    (byte) 1));
+        }
         index++;
     }
 }
