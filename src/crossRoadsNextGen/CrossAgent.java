@@ -1,6 +1,7 @@
 package crossRoadsNextGen;
 
 import crossRoadsNextGen.behaviors.ListenerBehavior;
+import de.tudresden.sumo.cmd.Trafficlight;
 import jade.core.Agent;
 import it.polito.appeal.traci.SumoTraciConnection;
 import jade.domain.DFService;
@@ -27,7 +28,6 @@ public class CrossAgent extends Agent {
         }
 
         id = String.valueOf(args[0]);
-        System.err.println(id);
         conn = (SumoTraciConnection) args[1];
 
         duration = 0;

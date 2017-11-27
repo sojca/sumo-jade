@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://sumo.dlr.de/xsd/net_file.xsd" uri="sumo.dlr.de/xsd/net_file.xsd"/>
+    <system systemId="http://sumo.dlr.de/xsd/taz_file.xsd" uri="sumo.dlr.de/xsd/taz_file.xsd"/>
+    <system systemId="http://sumo.dlr.de/xsd/baseTypes.xsd" uri="sumo.dlr.de/xsd/baseTypes.xsd"/>
+</catalog>

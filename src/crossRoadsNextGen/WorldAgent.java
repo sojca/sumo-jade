@@ -3,6 +3,8 @@ package crossRoadsNextGen;
 import crossRoadsNextGen.behaviors.TimestepsBehaviour;
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.ws.container.SumoStringList;
+import de.tudresden.ws.container.SumoTLSPhase;
+import de.tudresden.ws.container.SumoTLSProgram;
 import it.polito.appeal.traci.SumoTraciConnection;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -37,7 +39,7 @@ public class WorldAgent extends Agent {
 
             // Initiate arrays of crossroads
             crossroads = new DFAgentDescription[trafficLights.size()];
-
+             
             // Create crossroads as agents
             AgentController crossAgent;
             for (int i = 0; i < trafficLights.size(); i++) {

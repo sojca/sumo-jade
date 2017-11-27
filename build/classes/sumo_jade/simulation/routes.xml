@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <routes>
-  <route id="s1" edges="gneE0 gneE5 gneE9" arrivalPos="-1"/>
-  <route id="s2" edges="gneE10 gneE11" arrivalPos="-1"/>  
+  <route id="west_north" edges="gneE0 gneE3" arrivalPos="-1"/>
+  <route id="west_north_2" edges="gneE0 gneE5 gneE16" arrivalPos="-1"/>
+  <route id="west_south" edges="gneE0 gneE8" arrivalPos="-1"/>
+  <route id="west_south_2" edges="gneE0 gneE5 gneE11" arrivalPos="-1"/>
+  <route id="west_east" edges="gneE0 gneE5 gneE9" arrivalPos="-1"/>
+  <route id="north_south" edges="gneE2 gneE8" arrivalPos="-1"/>
+  <route id="north_south_2" edges="gneE2 gneE5 gneE11" arrivalPos="-1"/>
+  <route id="north_north" edges="gneE0 gneE5 gneE16" arrivalPos="-1"/>
+  <route id="north_east" edges="gneE0 gneE5 gneE9" arrivalPos="-1"/>
+<!--  <route id="north_2_east" edges="gneE15 gneE9" arrivalPos="-1"/>
+  <route id="north_2_north" edges="gneE15 gneE4 gneE3" arrivalPos="-1"/>
+  <route id="north_2_south" edges="gneE15 gneE4 gneE8" arrivalPos="-1"/>-->
+  <route id="north_2_south_2" edges="gneE15 gneE11" arrivalPos="-1"/>
+  <route id="south_north" edges="gneE7 gneE3" arrivalPos="-1"/>
+  <route id="south_north_2" edges="gneE7 gneE5 gneE16" arrivalPos="-1"/>
+  <route id="south_south" edges="gneE7 gneE5 gneE11" arrivalPos="-1"/>
+  <route id="south_east" edges="gneE7 gneE5 gneE9" arrivalPos="-1"/>
+  <route id="south_2_north" edges="gneE12 gneE4 gneE3" arrivalPos="-1"/>
+  <route id="south_2_north_2" edges="gneE12 gneE16" arrivalPos="-1"/>
+  <route id="south_2_south" edges="gneE12 gneE4 gneE8" arrivalPos="-1"/>
+  <route id="south_2_east" edges="gneE12 gneE9" arrivalPos="-1"/>
+  <route id="east_north" edges="gneE10 gneE4 gneE3" arrivalPos="-1"/>
+  <route id="east_north_2" edges="gneE10 gneE16" arrivalPos="-1"/>
+  <route id="east_south" edges="gneE10 gneE4 gneE8" arrivalPos="-1"/>
+  <route id="east_south_2" edges="gneE10 gneE11" arrivalPos="-1"/>
 </routes>
