@@ -32,7 +32,7 @@ public class ListenerBehavior extends CyclicBehaviour {
     };
 
     private CrossAgent crossagent;
-    private boolean defaultBehavior = false;
+    private boolean defaultBehavior = true;
 
     @Override
     public void action() {
