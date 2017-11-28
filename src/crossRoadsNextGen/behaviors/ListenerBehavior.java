@@ -18,17 +18,17 @@ public class ListenerBehavior extends CyclicBehaviour {
     private int defaultTime = 50;
     // first index is main road
     private final int[][] rules_ns_gnej1 = new int[][]{
-        {0, -10, -20, -30},
-        {10, 0, -10, -20},
-        {20, 10, 0, -10},
-        {30, 20, 10, 0}
+        {0, -1, -3, -6},
+        {1, 0, -1, 3},
+        {3, 1, 0, -1},
+        {6, 3, 1, 0}
     };
 
     private final int[][] rules_we_gnej1 = new int[][]{
-        {0, 2, 4, 8},
-        {-2, 0, 2, 4},
-        {-4, -2, 0, 2},
-        {-8, -4, -2, 0}
+        {0, 1, 3, 6},
+        {-1, 0, 1, 3},
+        {-3, -1, 0, 1},
+        {-6, -3, -1, 0}
     };
 
     private CrossAgent crossagent;
@@ -60,29 +60,29 @@ public class ListenerBehavior extends CyclicBehaviour {
 
     private int[] fuzzifier(String junctionID) throws Exception {
         // north (gneE2), south (gneE7) - main road
-        double n = (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE2"));
-        double s = (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE7"));
-        double w = (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE0"));
-        double e = (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE4"));
+        int n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE2"));
+        int s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE7"));
+        int w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE0"));
+        int e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE4"));
         int[] ret = new int[]{0, 0};
 
-        if ((n + s) / 2 == 0) {
+        if ((n + s) / 2 < 4) {
             ret[0] = ZERO;
-        } else if ((n + s) / 2 < 30) {
+        } else if ((n + s) / 2 < 10) {
             ret[0] = SMALL;
-        } else if ((n + s) / 2 < 90) {
+        } else if ((n + s) / 2 < 20) {
             ret[0] = MEDIUM;
-        } else if ((n + s) / 2 >= 90) {
+        } else if ((n + s) / 2 >= 20) {
             ret[0] = LARGE;
         }
 
-        if ((w + e) / 2 == 0) {
+        if ((w + e) / 2 < 4) {
             ret[1] = ZERO;
-        } else if ((w + e) / 2 < 30) {
+        } else if ((w + e) / 2 < 10) {
             ret[1] = SMALL;
-        } else if ((w + e) / 2 < 90) {
+        } else if ((w + e) / 2 < 20) {
             ret[1] = MEDIUM;
-        } else if ((w + e) / 2 >= 90) {
+        } else if ((w + e) / 2 >= 20) {
             ret[1] = LARGE;
         }
         System.out.println("NS: " + ret[0] + ", WE: " +  ret[1]);
@@ -94,7 +94,7 @@ public class ListenerBehavior extends CyclicBehaviour {
         if ("gneJ1".equals(crossagent.getId())) {
             switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ1"))) {
                 case ("rrGGrrrrGg"):
-                    defaultTime += rules_ns_gnej1[fuzzy_set[0]][fuzzy_set[1]];
+              //      defaultTime += rules_ns_gnej1[fuzzy_set[0]][fuzzy_set[1]];
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_YELLOW.toString()));
@@ -123,7 +123,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     }
                     break;
                 case ("GgrrGGGgrr"):
-                    defaultTime += rules_we_gnej1[fuzzy_set[0]][fuzzy_set[1]];
+        //            defaultTime += rules_we_gnej1[fuzzy_set[0]][fuzzy_set[1]];
 
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();

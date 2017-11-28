@@ -17,7 +17,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
 
     private WorldAgent worldagent;
     private final String[] vehicles = {"car", "car", "car", "car", "car", "car", "car", "car", "motorcycle", "motorcycle",
-        "bus", "truck"};
+        "bus"};
     private final String[] westDirections = {"west_north", "west_north_2", "west_south", "west_south_2", "west_east"};
     private final String[] northDirections = {"north_south", "north_south_2", "north_north", "north_east"};
     private final String[] north2Directions = {"north_2_south_2"};
@@ -84,7 +84,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
      */
     private void generateCars(int simtime) throws Exception {
         int route, vehicle;
-        if (Math.random() < 0.05) {
+        if (Math.random() < 0.005) {
             route = rand.nextInt(westDirections.length);
             vehicle = rand.nextInt(vehicles.length);
             worldagent.getConn().do_job_set(Vehicle.add("veh-w-" + index, vehicles[vehicle], westDirections[route], simtime, 0, 13.8,
@@ -97,7 +97,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
                     (byte) 1));
         }
         
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.001) {
             route = rand.nextInt(north2Directions.length);
             vehicle = rand.nextInt(vehicles.length);
             worldagent.getConn().do_job_set(Vehicle.add("veh-n2-" + index, vehicles[vehicle], north2Directions[route], simtime, 0, 13.8,
@@ -109,13 +109,13 @@ public class TimestepsBehaviour extends CyclicBehaviour {
             worldagent.getConn().do_job_set(Vehicle.add("veh-s-" + index, vehicles[vehicle], southDirections[route], simtime, 0, 13.8,
                     (byte) 1));
         }
-        if (Math.random() < 0.04) {
+        if (Math.random() < 0.004) {
             route = rand.nextInt(south2Directions.length);
             vehicle = rand.nextInt(vehicles.length);
             worldagent.getConn().do_job_set(Vehicle.add("veh-s2-" + index, vehicles[vehicle], south2Directions[route], simtime, 0, 13.8,
                     (byte) 1));
         }
-        if (Math.random() < 0.07) {
+        if (Math.random() < 0.007) {
             route = rand.nextInt(eastDirections.length);
             vehicle = rand.nextInt(vehicles.length);
             worldagent.getConn().do_job_set(Vehicle.add("veh-e-" + index, vehicles[vehicle], eastDirections[route], simtime, 0, 13.8,
