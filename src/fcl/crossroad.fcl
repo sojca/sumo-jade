@@ -13,30 +13,67 @@ END_VAR
 
 // Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
 FUZZIFY main_road			
-	TERM zero := (0, 1) (5, 0);
-	TERM small := (0, 0) (5, 1) (10, 0);
-	TERM medium := (5, 0) (10, 1) (15,0);
-	TERM large := (10, 0) (15, 1);
+	TERM zero := sigm -1 3;
+	TERM small := gauss 5 3;
+	TERM medium := gauss 10 3;
+	TERM large := sigm 1 12;
 END_FUZZIFY
 
 FUZZIFY second_road			
-	TERM zero := (0, 1) (5, 0);
-	TERM small := (0, 0) (5, 1) (10, 0);
-	TERM medium := (5, 0) (10, 1) (15,0);
-	TERM large := (10, 0) (15, 1);
+	TERM zero := sigm -1 3;
+	TERM small := gauss 5 3;
+	TERM medium := gauss 10 3;
+	TERM large := sigm 1 12;
 END_FUZZIFY
 
-// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+FUZZIFY travel_time			
+	TERM low := sigm -0.1 100;
+	TERM medium := gauss 250 100;
+	TERM high := sigm 0.05 400;
+END_FUZZIFY
+
 DEFUZZIFY time	
-	TERM dec := (-6, 1) (0, 0);
-	TERM zero := (-6, 0) (0, 1) (6, 0);
-	TERM inc := (0, 0) (6, 1);
+	TERM dec := sigm -1 -4;
+	TERM zero := gauss 0 3;
+	TERM inc := sigm 1 4;
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+DEFUZZIFY priority	
+	TERM well := sigm -2 2;
+	TERM fine := gauss 3.5 1.5;
+	TERM bad := gauss 6.5 1.5;
+	TERM verybad := sigm 2 8;
 	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
 	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
 END_DEFUZZIFY
 
 // Inference rules
 RULEBLOCK No1
+	AND : MIN;	// Use 'min' for 'and'
+	ACT : MIN;	// Use 'min' activation method
+	ACCU : MAX;	// Use 'max' accumulation method
+
+    RULE 1 : IF main_road IS zero AND second_road IS zero THEN time IS zero;
+    RULE 2 : IF main_road IS zero AND second_road IS small THEN time IS zero;
+    RULE 3 : IF main_road IS zero AND second_road IS medium THEN time IS dec;
+    RULE 4 : IF main_road IS zero AND second_road IS large THEN time IS dec;
+    RULE 5 : IF main_road IS small AND second_road IS zero THEN time IS inc;
+    RULE 6 : IF main_road IS small AND second_road IS small THEN time IS zero;
+    RULE 7 : IF main_road IS small AND second_road IS medium THEN time IS dec;
+    RULE 8 : IF main_road IS small AND second_road IS large THEN time IS dec;
+    RULE 9 : IF main_road IS medium AND second_road IS zero THEN time IS inc;
+    RULE 10 : IF main_road IS medium AND second_road IS small THEN time IS inc;
+    RULE 11 : IF main_road IS medium AND second_road IS medium THEN time IS zero;
+    RULE 12 : IF main_road IS medium AND second_road IS large THEN time IS dec;
+    RULE 13 : IF main_road IS large AND second_road IS zero THEN time IS inc;
+    RULE 14 : IF main_road IS large AND second_road IS small THEN time IS inc;
+    RULE 15 : IF main_road IS large AND second_road IS medium THEN time IS inc;
+    RULE 16 : IF main_road IS large AND second_road IS large THEN time IS zero;
+END_RULEBLOCK
+
+RULEBLOCK No2
 	AND : MIN;	// Use 'min' for 'and'
 	ACT : MIN;	// Use 'min' activation method
 	ACCU : MAX;	// Use 'max' accumulation method

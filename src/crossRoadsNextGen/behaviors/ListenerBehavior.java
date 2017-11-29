@@ -17,20 +17,6 @@ public class ListenerBehavior extends CyclicBehaviour {
     private final int MEDIUM = 2;
     private final int LARGE = 3;
     private int defaultTime = 50;
-    // first index is main road
-    private final int[][] rules_ns_gnej1 = new int[][]{
-        {0, -1, -3, -6},
-        {1, 0, -1, 3},
-        {3, 1, 0, -1},
-        {6, 3, 1, 0}
-    };
-
-    private final int[][] rules_we_gnej1 = new int[][]{
-        {0, 1, 3, 6},
-        {-1, 0, 1, 3},
-        {-3, -1, 0, 1},
-        {-6, -3, -1, 0}
-    };
 
     private CrossAgent crossagent;
     private boolean useFuzzy = true;
@@ -65,9 +51,9 @@ public class ListenerBehavior extends CyclicBehaviour {
                     s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE12"));
                     w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE5"));
                     e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE10"));
-                    
-                    double ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzy((n + s), (w + e) / 2);
-                    double we3 = crossagent.getFuzzyController().InterferenceAndDefuzzy((w + e) / 2, (n + s) / 2);
+
+                    double ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzy((n + s)/2, (w + e) / 2);
+                    double we3 = crossagent.getFuzzyController().InterferenceAndDefuzzy((w + e) / 2, (n + s)/2);
 
                     updateLights(ns1, we1, ne, ns3, we3);
                 }
@@ -83,6 +69,7 @@ public class ListenerBehavior extends CyclicBehaviour {
             switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ1"))) {
                 case ("rrGGrrrrGg"):
                     defaultTime += ns1;
+
                     System.out.println("NS1: " + ns1);
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
@@ -147,11 +134,10 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
             }
 
-        }
-        else if ("gneJ3".equals(crossagent.getId())) {
+        } else if ("gneJ3".equals(crossagent.getId())) {
             switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ3"))) {
                 case ("rrrrGGgrrrrGGg"):
-                    defaultTime += ns3;
+                    defaultTime += ns3;                    
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_YELLOW.toString()));
@@ -182,7 +168,6 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case ("GGGgrrrGGGgrrr"):
                     defaultTime += we3;
-
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_YELLOW.toString()));
