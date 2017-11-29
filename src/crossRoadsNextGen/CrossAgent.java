@@ -1,6 +1,8 @@
 package crossRoadsNextGen;
 
 import crossRoadsNextGen.behaviors.ListenerBehavior;
+import crossRoadsNextGen.fuzzy.FuzzyController;
+import crossRoadsNextGen.fuzzy.FuzzyController2;
 import de.tudresden.sumo.cmd.Trafficlight;
 import jade.core.Agent;
 import it.polito.appeal.traci.SumoTraciConnection;
@@ -18,7 +20,8 @@ public class CrossAgent extends Agent {
     private String id;
     private SumoTraciConnection conn;
     private int duration;
-
+    private FuzzyController2 fuzzyController;
+    
     @Override
     protected void setup() {
         Object args[] = getArguments();
@@ -29,9 +32,9 @@ public class CrossAgent extends Agent {
 
         id = String.valueOf(args[0]);
         conn = (SumoTraciConnection) args[1];
-
         duration = 0;
-
+        fuzzyController = new FuzzyController2();
+        
         registerService();
 
         addBehaviour(new ListenerBehavior());
@@ -81,5 +84,8 @@ public class CrossAgent extends Agent {
 
     public void incrementDuration() {
         this.duration++;
+    }
+    public FuzzyController2 getFuzzyController(){
+        return this.fuzzyController;
     }
 }

@@ -1,0 +1,62 @@
+FUNCTION_BLOCK tipper	// Block definition (there may be more than one block per file)
+
+// Define input variables
+VAR_INPUT				
+	main_road : REAL;
+	second_road : REAL;
+END_VAR
+
+// Define output variable
+VAR_OUTPUT				
+	time : REAL;
+END_VAR
+
+// Fuzzify input variable 'service': {'poor', 'good' , 'excellent'}
+FUZZIFY main_road			
+	TERM zero := (0, 1) (5, 0);
+	TERM small := (0, 0) (5, 1) (10, 0);
+	TERM medium := (5, 0) (10, 1) (15,0);
+	TERM large := (10, 0) (15, 1);
+END_FUZZIFY
+
+FUZZIFY second_road			
+	TERM zero := (0, 1) (5, 0);
+	TERM small := (0, 0) (5, 1) (10, 0);
+	TERM medium := (5, 0) (10, 1) (15,0);
+	TERM large := (10, 0) (15, 1);
+END_FUZZIFY
+
+// Defzzzify output variable 'tip' : {'cheap', 'average', 'generous' }
+DEFUZZIFY time	
+	TERM dec := (-6, 1) (0, 0);
+	TERM zero := (-6, 0) (0, 1) (6, 0);
+	TERM inc := (0, 0) (6, 1);
+	METHOD : COG;		// Use 'Center Of Gravity' defuzzification method
+	DEFAULT := 0;		// Default value is 0 (if no rule activates defuzzifier)
+END_DEFUZZIFY
+
+// Inference rules
+RULEBLOCK No1
+	AND : MIN;	// Use 'min' for 'and'
+	ACT : MIN;	// Use 'min' activation method
+	ACCU : MAX;	// Use 'max' accumulation method
+
+    RULE 1 : IF main_road IS zero AND second_road IS zero THEN time IS zero;
+    RULE 2 : IF main_road IS zero AND second_road IS small THEN time IS zero;
+    RULE 3 : IF main_road IS zero AND second_road IS medium THEN time IS dec;
+    RULE 4 : IF main_road IS zero AND second_road IS large THEN time IS dec;
+    RULE 5 : IF main_road IS small AND second_road IS zero THEN time IS inc;
+    RULE 6 : IF main_road IS small AND second_road IS small THEN time IS zero;
+    RULE 7 : IF main_road IS small AND second_road IS medium THEN time IS dec;
+    RULE 8 : IF main_road IS small AND second_road IS large THEN time IS dec;
+    RULE 9 : IF main_road IS medium AND second_road IS zero THEN time IS inc;
+    RULE 10 : IF main_road IS medium AND second_road IS small THEN time IS inc;
+    RULE 11 : IF main_road IS medium AND second_road IS medium THEN time IS zero;
+    RULE 12 : IF main_road IS medium AND second_road IS large THEN time IS dec;
+    RULE 13 : IF main_road IS large AND second_road IS zero THEN time IS inc;
+    RULE 14 : IF main_road IS large AND second_road IS small THEN time IS inc;
+    RULE 15 : IF main_road IS large AND second_road IS medium THEN time IS inc;
+    RULE 16 : IF main_road IS large AND second_road IS large THEN time IS zero;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

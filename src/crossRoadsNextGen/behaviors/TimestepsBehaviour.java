@@ -27,7 +27,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
     private final String[] eastDirections = {"east_north", "east_north", "east_north_2", "east_south", "east_south_2"};
     private final Random rand = new Random();
     private int index = 0;
-    private double jam = 1.0;
+    private double jam = 1.5;
 
     @Override
     public void action() {
@@ -40,7 +40,6 @@ public class TimestepsBehaviour extends CyclicBehaviour {
             getService();
             simtime = (int) worldagent.getConn().do_job_get(Simulation.getCurrentTime());
 
-            System.out.println("NEW STEP: " + simtime);
 
             informAgents(simtime);
             generateCars(simtime);

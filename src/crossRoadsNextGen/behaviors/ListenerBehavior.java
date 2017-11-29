@@ -2,23 +2,11 @@ package crossRoadsNextGen.behaviors;
 
 import crossRoadsNextGen.CrossAgent;
 import de.tudresden.sumo.cmd.Edge;
+import de.tudresden.sumo.cmd.Lane;
 import de.tudresden.sumo.cmd.Trafficlight;
-import fuzzy4j.aggregation.AlgebraicProduct;
-import fuzzy4j.aggregation.AlgebraicSum;
-import fuzzy4j.flc.ControllerBuilder;
-import fuzzy4j.flc.FLC;
-import fuzzy4j.flc.InputInstance;
-import fuzzy4j.flc.Term;
-import fuzzy4j.flc.Variable;
-import fuzzy4j.flc.defuzzify.Centroid;
-import fuzzy4j.sets.ConstantFunction;
-import fuzzy4j.sets.FuzzyFunction;
-import fuzzy4j.sets.LinearFunction;
-import fuzzy4j.sets.TriangularFunction;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +33,7 @@ public class ListenerBehavior extends CyclicBehaviour {
     };
 
     private CrossAgent crossagent;
-    private boolean defaultBehavior = false;
+    private boolean useFuzzy = true;
 
     @Override
     public void action() {
@@ -60,67 +48,28 @@ public class ListenerBehavior extends CyclicBehaviour {
             // Parse message
             crossagent.timestep(Integer.parseInt(msg.getContent()));
             try {
-                if (!defaultBehavior) {
-                    FuzzyFunction zeroCountCars = new TriangularFunction(-5, 0, 5);
-                    FuzzyFunction smallCountCars = new TriangularFunction(0, 5, 10);
-                    FuzzyFunction mediumCountCars = new TriangularFunction(5, 10, 15);
-                    FuzzyFunction largeCountCars = new TriangularFunction(10, 15, 20);
+                if (useFuzzy) {
 
-                    FuzzyFunction decrementTime = new TriangularFunction(-12, -6, 0);
-                    FuzzyFunction zTime = new TriangularFunction(-6, 0, 6);
-                    FuzzyFunction incrementTime = new TriangularFunction(0, 6, 12);
-
-                    Term zeroTerm = Term.term("zero", zeroCountCars);
-                    Term smallTerm = Term.term("small", smallCountCars);
-                    Term mediumTerm = Term.term("medium", mediumCountCars);
-                    Term largeTerm = Term.term("large", largeCountCars);
-
-                    Term decTerm = Term.term("dec", decrementTime);
-                    Term zTerm = Term.term("zero", zTime);
-                    Term incTerm = Term.term("inc", incrementTime);
-
-                    Variable countCarsNS = Variable.input("car_count_ns", zeroTerm, smallTerm, mediumTerm, largeTerm).start(0);
-                    Variable countCarsWE = Variable.input("car_count_we", zeroTerm, smallTerm, mediumTerm, largeTerm).start(0);
-
-                    Variable timeRule = Variable.output("time_rule", decTerm, zTerm, incTerm).start(-6).end(6);
-
-                    FLC impl = ControllerBuilder.newBuilder()
-                            .when().var(countCarsNS).is(zeroTerm).and().var(countCarsWE).is(zeroTerm).then().var(timeRule).is(zTerm)
-                            .when().var(countCarsNS).is(zeroTerm).and().var(countCarsWE).is(smallTerm).then().var(timeRule).is(zTerm)
-                            .when().var(countCarsNS).is(zeroTerm).and().var(countCarsWE).is(mediumTerm).then().var(timeRule).is(decTerm)
-                            .when().var(countCarsNS).is(zeroTerm).and().var(countCarsWE).is(largeTerm).then().var(timeRule).is(decTerm)
-                            .when().var(countCarsNS).is(smallTerm).and().var(countCarsWE).is(zeroTerm).then().var(timeRule).is(incTerm)
-                            .when().var(countCarsNS).is(smallTerm).and().var(countCarsWE).is(smallTerm).then().var(timeRule).is(zTerm)
-                            .when().var(countCarsNS).is(smallTerm).and().var(countCarsWE).is(mediumTerm).then().var(timeRule).is(decTerm)
-                            .when().var(countCarsNS).is(smallTerm).and().var(countCarsWE).is(largeTerm).then().var(timeRule).is(decTerm)
-                            .when().var(countCarsNS).is(mediumTerm).and().var(countCarsWE).is(zeroTerm).then().var(timeRule).is(incTerm)
-                            .when().var(countCarsNS).is(mediumTerm).and().var(countCarsWE).is(smallTerm).then().var(timeRule).is(incTerm)
-                            .when().var(countCarsNS).is(mediumTerm).and().var(countCarsWE).is(mediumTerm).then().var(timeRule).is(zTerm)
-                            .when().var(countCarsNS).is(mediumTerm).and().var(countCarsWE).is(largeTerm).then().var(timeRule).is(decTerm)
-                            .when().var(countCarsNS).is(largeTerm).and().var(countCarsWE).is(zeroTerm).then().var(timeRule).is(incTerm)
-                            .when().var(countCarsNS).is(largeTerm).and().var(countCarsWE).is(smallTerm).then().var(timeRule).is(incTerm)
-                            .when().var(countCarsNS).is(largeTerm).and().var(countCarsWE).is(mediumTerm).then().var(timeRule).is(incTerm)
-                            .when().var(countCarsNS).is(largeTerm).and().var(countCarsWE).is(largeTerm).then().var(timeRule).is(zTerm)
-                            //                            .activationFunction(AlgebraicProduct.INSTANCE)
-                            //                            .accumulationFunction(AlgebraicSum.INSTANCE)
-                            .defuzzifier(new Centroid())
-                            .create();
                     int n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE2"));
+                    int neLane = (int) crossagent.getConn().do_job_get(Lane.getLastStepVehicleNumber("gneE2_1"));
                     int s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE7"));
                     int w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE0"));
                     int e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE4"));
 
-                    InputInstance instance = new InputInstance().is(countCarsNS, (n + s) / 2).is(countCarsWE, (w + e) / 2);
+                    double ns1 = crossagent.getFuzzyController().InterferenceAndDefuzzy((n + s) / 2, (w + e) / 2);
+                    double we1 = crossagent.getFuzzyController().InterferenceAndDefuzzy((w + e) / 2, (n + s) / 2);
+                    double ne = crossagent.getFuzzyController().InterferenceAndDefuzzy(neLane, (w + e) / 4);
 
-                    Map<Variable, Double> crisp = impl.apply(instance);
-                    System.out.println("normal.fuzzy = " + crisp.get(timeRule) + " cars no.:" + (n + s) / 2);
-                    int[] fuzzy_set = fuzzifier(crossagent.getId());
-                    if (crisp.get(timeRule) == null) {
-                        updateLights(6);
-                    } else {
-                        updateLights(crisp.get(timeRule));
+                    n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE15"));
+                    //int neLane = (int) crossagent.getConn().do_job_get(Lane.getLastStepVehicleNumber("gneE2_1"));
+                    s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE12"));
+                    w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE5"));
+                    e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE10"));
+                    
+                    double ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzy((n + s), (w + e) / 2);
+                    double we3 = crossagent.getFuzzyController().InterferenceAndDefuzzy((w + e) / 2, (n + s) / 2);
 
-                    }
+                    updateLights(ns1, we1, ne, ns3, we3);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ListenerBehavior.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,47 +77,17 @@ public class ListenerBehavior extends CyclicBehaviour {
         }
     }
 
-    private int[] fuzzifier(String junctionID) throws Exception {
-        // north (gneE2), south (gneE7) - main road
-        int n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE2"));
-        int s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE7"));
-        int w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE0"));
-        int e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE4"));
-        int[] ret = new int[]{0, 0};
-
-        if ((n + s) / 2 < 4) {
-            ret[0] = ZERO;
-        } else if ((n + s) / 2 < 10) {
-            ret[0] = SMALL;
-        } else if ((n + s) / 2 < 20) {
-            ret[0] = MEDIUM;
-        } else if ((n + s) / 2 >= 20) {
-            ret[0] = LARGE;
-        }
-
-        if ((w + e) / 2 < 4) {
-            ret[1] = ZERO;
-        } else if ((w + e) / 2 < 10) {
-            ret[1] = SMALL;
-        } else if ((w + e) / 2 < 20) {
-            ret[1] = MEDIUM;
-        } else if ((w + e) / 2 >= 20) {
-            ret[1] = LARGE;
-        }
-        //    System.out.println("NS: " + ret[0] + ", WE: " + ret[1]);
-        return ret;
-    }
-
-    private void updateLights(double d) throws Exception {
+    private void updateLights(double ns1, double we1, double ne, double ns3, double we3) throws Exception {
 
         if ("gneJ1".equals(crossagent.getId())) {
             switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ1"))) {
                 case ("rrGGrrrrGg"):
-                    defaultTime += d;
+                    defaultTime += ns1;
+                    System.out.println("NS1: " + ns1);
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_YELLOW.toString()));
-                        defaultTime = 30;
+                        defaultTime = 20;
                     }
                     break;
                 case ("rryyrrrryg"):
@@ -179,10 +98,11 @@ public class ListenerBehavior extends CyclicBehaviour {
                     }
                     break;
                 case ("rrrrrrrrrG"):
+                    defaultTime += ne;
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_CROSS_YELLOW.toString()));
-                        defaultTime = 30;
+                        defaultTime = 20;
                     }
                     break;
                 case ("rrrrrrrrry"):
@@ -194,11 +114,13 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case ("GgrrGGGgrr"):
                     //            defaultTime += rules_we_gnej1[fuzzy_set[0]][fuzzy_set[1]];
+                    defaultTime += we1;
+                    System.out.println("WE1: " + we1);
 
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_YELLOW.toString()));
-                        defaultTime = 30;
+                        defaultTime = 20;
                     }
                     break;
 
@@ -213,7 +135,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_CROSS_YELLOW.toString()));
-                        defaultTime = 30;
+                        defaultTime = 20;
                     }
                     break;
                 case ("ryrrrrryrr"):
@@ -226,8 +148,71 @@ public class ListenerBehavior extends CyclicBehaviour {
             }
 
         }
-//        else if ("gneJ3".equals(crossagent.getId())) {
-//            crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_GREEN.toString()));
-//        }
+        else if ("gneJ3".equals(crossagent.getId())) {
+            switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ3"))) {
+                case ("rrrrGGgrrrrGGg"):
+                    defaultTime += ns3;
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_YELLOW.toString()));
+                        defaultTime = 20;
+                    }
+                    break;
+                case ("rrrryygrrrryyg"):
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_GREEN.toString()));
+                        defaultTime = 60;
+                    }
+                    break;
+                case ("rrrrrrGrrrrrrG"):
+                    //defaultTime += ne;
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_YELLOW.toString()));
+                        defaultTime = 20;
+                    }
+                    break;
+                case ("rrrrrryrrrrrry"):
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_GREEN.toString()));
+                        defaultTime = 330;
+                    }
+                    break;
+                case ("GGGgrrrGGGgrrr"):
+                    defaultTime += we3;
+
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_YELLOW.toString()));
+                        defaultTime = 20;
+                    }
+                    break;
+
+                case ("yyygrrryyygrrr"):
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_CROSS_GREEN.toString()));
+                        defaultTime = 60;
+                    }
+                    break;
+                case ("rrrGrrrrrrGrrr"):
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_CROSS_YELLOW.toString()));
+                        defaultTime = 20;
+                    }
+                    break;
+                case ("rrryrrrrrryrrr"):
+                    if (crossagent.getDuration() > defaultTime) {
+                        crossagent.resetDuration();
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_GREEN.toString()));
+                        defaultTime = 330;
+                    }
+                    break;
+            }
+
+        }
     }
 }
