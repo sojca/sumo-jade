@@ -9,6 +9,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +28,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
     private final String[] eastDirections = {"east_north", "east_north", "east_north_2", "east_south", "east_south_2"};
     private final Random rand = new Random();
     private int index = 0;
-    private double jam = 1;
+    private double jam = 1.7;
 
     @Override
     public void action() {
@@ -37,14 +38,13 @@ public class TimestepsBehaviour extends CyclicBehaviour {
         int simtime;
 
         try {
-            getService();
-            simtime = (int) worldagent.getConn().do_job_get(Simulation.getCurrentTime());
-
-
-            informAgents(simtime);
-            generateCars(simtime);
-
             worldagent.getConn().do_timestep();
+            simtime = (int) worldagent.getConn().do_job_get(Simulation.getCurrentTime());
+            generateCars(simtime);
+            getService();
+            informAgents(simtime);
+            waitForResponses();
+            System.out.println("SYNCED");
         } catch (Exception ex) {
             Logger.getLogger(TimestepsBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -122,5 +122,16 @@ public class TimestepsBehaviour extends CyclicBehaviour {
                     (byte) 1));
         }
         index++;
+    }
+
+    private void waitForResponses() {
+        int count = 0;
+        while (count < 2) {
+            MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
+            ACLMessage msg = myAgent.receive(mt);
+            if (msg != null) {
+                count ++;
+            }
+        }
     }
 }

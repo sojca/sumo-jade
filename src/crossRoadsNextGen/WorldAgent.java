@@ -46,7 +46,7 @@ public class WorldAgent extends Agent {
                 String id = trafficLights.get(i);
                 crossAgent = c.createNewAgent("crossAgent" + id,
                         "crossRoadsNextGen.CrossAgent",
-                        new Object[]{id, conn});
+                        new Object[]{id, conn, getAID()});
                 crossAgent.start();
             }
 

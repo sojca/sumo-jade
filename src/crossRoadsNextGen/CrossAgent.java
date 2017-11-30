@@ -6,6 +6,7 @@ import crossRoadsNextGen.fuzzy.FuzzyController2;
 import de.tudresden.sumo.cmd.Trafficlight;
 import jade.core.Agent;
 import it.polito.appeal.traci.SumoTraciConnection;
+import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -21,17 +22,19 @@ public class CrossAgent extends Agent {
     private SumoTraciConnection conn;
     private int duration;
     private FuzzyController2 fuzzyController;
+    private AID world;
     
     @Override
     protected void setup() {
         Object args[] = getArguments();
 
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.err.println("ERROR: Incorrect number of arguments for CrossAgent!");
         }
 
         id = String.valueOf(args[0]);
         conn = (SumoTraciConnection) args[1];
+        world = (AID) args[2];
         duration = 0;
         fuzzyController = new FuzzyController2();
         
@@ -87,5 +90,9 @@ public class CrossAgent extends Agent {
     }
     public FuzzyController2 getFuzzyController(){
         return this.fuzzyController;
+    }
+
+    public AID getWorld() {
+        return world;
     }
 }

@@ -41,37 +41,39 @@ public class ListenerBehavior extends CyclicBehaviour {
                     int w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE0"));
                     int e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE4"));
 
-                    double priN = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(n, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE2")));
-                    double priS = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(s, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE7")));
-                    double priW = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(w, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE0")));
-                    double priE = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(e, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE4")));
+//                    double priN = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(n, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE2")));
+//                    double priS = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(s, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE7")));
+//                    double priW = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(w, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE0")));
+//                    double priE = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(e, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE4")));
+//
+//                    double ns1 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
+//                    double we1 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
+//
+//                    n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE15"));
+//                    s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE12"));
+//                    w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE5"));
+//                    e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE10"));
+//
+//                    priN = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(n, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE15")));
+//                    priS = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(s, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE12")));
+//                    priW = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(w, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE5")));
+//                    priE = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(e, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE10")));
+//
+//                    double ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
+//                    double we3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
 
-                    double ns1 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
-                    double we1 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
-
-                    n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE15"));
-                    s = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE12"));
-                    w = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE5"));
-                    e = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE10"));
-
-                    priN = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(n, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE15")));
-                    priS = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(s, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE12")));
-                    priW = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(w, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE5")));
-                    priE = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(e, (double) crossagent.getConn().do_job_get(Edge.getTraveltime("gneE10")));
-
-                    double ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
-                    double we3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
-
-                    updateLights(ns1, we1, ns3, we3);
+                                     updateLights(0, 0, 0, 0);
+//   updateLights(ns1, we1, ns3, we3);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(ListenerBehavior.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        informWorld();
     }
 
     private void updateLights(double ns1, double we1, double ns3, double we3) throws Exception {
-
+        System.out.println("UPDATED");
         if ("gneJ1".equals(crossagent.getId())) {
             switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ1"))) {
                 case ("rrGGrrrrGg"):
@@ -143,8 +145,8 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
             }
 
-        } 
-            //else if ("gneJ3".equals(crossagent.getId())) {
+        }
+        //else if ("gneJ3".equals(crossagent.getId())) {
 //            switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ3"))) {
 //                case ("rrrrGGgrrrrGGg"):
 ////                    defaultTime += ns3;
@@ -209,5 +211,11 @@ public class ListenerBehavior extends CyclicBehaviour {
 //            }
 
 //        }
+    }
+
+    private void informWorld() {
+        ACLMessage m = new ACLMessage(ACLMessage.INFORM);
+        m.addReceiver(crossagent.getWorld());
+        crossagent.send(m);
     }
 }
