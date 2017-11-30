@@ -22,9 +22,10 @@ public class CrossAgent extends Agent {
     private String id;
     private SumoTraciConnection conn;
     private int duration;
+    private int simtime;
     private IFuzzyController fuzzyController;
     private AID world;
-    
+
     @Override
     protected void setup() {
         Object args[] = getArguments();
@@ -37,8 +38,9 @@ public class CrossAgent extends Agent {
         conn = (SumoTraciConnection) args[1];
         world = (AID) args[2];
         duration = 0;
-        fuzzyController = new FuzzyController2();
-        
+        simtime = 0;
+        fuzzyController = new FuzzyController();
+
         registerService();
 
         addBehaviour(new ListenerBehavior());
@@ -46,6 +48,7 @@ public class CrossAgent extends Agent {
 
     public void timestep(int duration) {
         this.duration++;
+        this.simtime++;
     }
 
     /**
@@ -81,7 +84,9 @@ public class CrossAgent extends Agent {
     public int getDuration() {
         return duration;
     }
-
+    public int getSimtime() {
+        return simtime;
+    }
     public void resetDuration() {
         this.duration = 0;
     }
@@ -89,7 +94,8 @@ public class CrossAgent extends Agent {
     public void incrementDuration() {
         this.duration++;
     }
-    public IFuzzyController getFuzzyController(){
+
+    public IFuzzyController getFuzzyController() {
         return this.fuzzyController;
     }
 

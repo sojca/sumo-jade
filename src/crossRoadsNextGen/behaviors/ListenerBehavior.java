@@ -12,14 +12,19 @@ import java.util.logging.Logger;
 
 public class ListenerBehavior extends CyclicBehaviour {
 
-    private final int ZERO = 0;
-    private final int SMALL = 1;
-    private final int MEDIUM = 2;
-    private final int LARGE = 3;
+    private double ns1 = 0;
+    private double we1 = 0;
+    private double ne1 = 0;
+    private double wnes1 = 0;
+
+    private double ns3 = 0;
+    private double nesw3 = 0;
+    private double we3 = 0;
+    private double wnes3 = 0;
     private int defaultTime = 330;
 
     private CrossAgent crossagent;
-    private boolean useFuzzy = true;
+    private boolean useFuzzy = false;
 
     @Override
     public void action() {
@@ -35,15 +40,6 @@ public class ListenerBehavior extends CyclicBehaviour {
             crossagent.timestep(Integer.parseInt(msg.getContent()));
             try {
                 if (useFuzzy) {
-                    double ns1 = 0;
-                    double we1 = 0;
-                    double ne1 = 0;
-                    double wnes1 = 0;
-
-                    double ns3 = 0;
-                    double nesw3 = 0;
-                    double we3 = 0;
-                    double wnes3 = 0;
                     if ("gneJ1".equals(crossagent.getId())) {
                         int n = (int) crossagent.getConn().do_job_get(Edge.getLastStepVehicleNumber("gneE2"));
                         int nLane = (int) crossagent.getConn().do_job_get(Lane.getLastStepVehicleNumber("gneE2_1"));
@@ -91,8 +87,10 @@ public class ListenerBehavior extends CyclicBehaviour {
                         we3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
                         wnes3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priWLane, priELane);
                     }
-                    updateLights(ns1, we1, ne1, wnes1, ns3, we3, nesw3, wnes3);
                 }
+
+                updateLights(ns1, we1, ne1, wnes1, ns3, we3, nesw3, wnes3);
+                //updateLights(0,0,0,0,0,0,0,0);
             } catch (Exception ex) {
                 Logger.getLogger(ListenerBehavior.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -123,7 +121,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case ("rrrrrrrrrG"):
                     defaultTime += ne1;
-                    defaultTime -= we1;
+//                    defaultTime -= we1;
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_CROSS_YELLOW.toString()));
@@ -159,7 +157,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case ("rGrrrrrGrr"):
                     defaultTime += wnes1;
-                    defaultTime -= ns1;
+//                    defaultTime -= ns1;
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_CROSS_YELLOW.toString()));
@@ -195,7 +193,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case ("rrrrrrGrrrrrrG"):
                     defaultTime += nesw3;
-                    defaultTime -= we3;
+//                    defaultTime -= we3;
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_YELLOW.toString()));
