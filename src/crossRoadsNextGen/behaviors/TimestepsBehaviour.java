@@ -28,7 +28,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
     private final String[] eastDirections = {"east_north", "east_north", "east_north_2", "east_south", "east_south_2"};
     private final Random rand = new Random();
     private int index = 0;
-    private double jam = 2;
+    private double jam = 1.7;
 
     @Override
     public void action() {
