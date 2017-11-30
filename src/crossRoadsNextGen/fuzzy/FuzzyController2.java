@@ -14,7 +14,7 @@ import net.sourceforge.jFuzzyLogic.rule.Variable;
  *
  * @author juraj.sojcak
  */
-public class FuzzyController2 {
+public class FuzzyController2 implements IFuzzyController{
 
     private FIS fis;
     public FuzzyController2() {
@@ -39,7 +39,8 @@ public class FuzzyController2 {
         return time.defuzzify();
     }
     
-    public double InterferenceAndDefuzzyPriority(double countCars, double travelTime) {
+        @Override
+        public double InterferenceAndDefuzzyPriority(double countCars, double travelTime) {
         countCars = (countCars > fis.getVariable("count_cars").getUniverseMax()) ? 
                 fis.getVariable("count_cars").getUniverseMax() : countCars; 
         
@@ -55,6 +56,7 @@ public class FuzzyController2 {
         return priority.defuzzify();
     }
     
+    @Override
     public double InterferenceAndDefuzzyTime(double priority1, double priority2) {
         
         fis.setVariable("priority_in1", priority1);
