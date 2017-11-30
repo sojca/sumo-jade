@@ -18,6 +18,7 @@ public class FuzzyController2 {
 
     private FIS fis;
     public FuzzyController2() {
+        System.out.println("asdasdadassdasdasdsadasdsada");
         String fileName = "src\\fcl\\crossroad.fcl";
         fis = FIS.load(fileName, true);
         
@@ -38,16 +39,29 @@ public class FuzzyController2 {
         return time.defuzzify();
     }
     
-    public double InterferenceAndDefuzzy(double countCarsFirst, double countCarsSecond) {
-        countCarsFirst = (countCarsFirst > 22) ? 22 : countCarsFirst; 
-        countCarsSecond = (countCarsSecond > 22) ? 22 : countCarsSecond; 
+    public double InterferenceAndDefuzzyPriority(double countCars, double travelTime) {
+        countCars = (countCars > fis.getVariable("count_cars").getUniverseMax()) ? 
+                fis.getVariable("count_cars").getUniverseMax() : countCars; 
         
-        fis.setVariable("main_road", countCarsFirst);
-        fis.setVariable("second_road", countCarsSecond);
+        travelTime = (travelTime > fis.getVariable("travel_time").getUniverseMax()) ? 
+                fis.getVariable("travel_time").getUniverseMax() : travelTime; 
+        
+        fis.setVariable("count_cars", countCars);
+        fis.setVariable("travel_time", travelTime);
+        fis.evaluate();
+
+        Variable priority = fis.getVariable("priority_out");
+        
+        return priority.defuzzify();
+    }
+    
+    public double InterferenceAndDefuzzyTime(double priority1, double priority2) {
+        
+        fis.setVariable("priority_in1", priority1);
+        fis.setVariable("priority_in2", priority2);
         fis.evaluate();
 
         Variable time = fis.getVariable("time");
-//        JFuzzyChart.get().chart(time, time.getDefuzzifier(), true);
         
         return time.defuzzify();
     }
