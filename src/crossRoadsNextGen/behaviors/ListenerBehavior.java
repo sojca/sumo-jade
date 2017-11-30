@@ -194,7 +194,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     }
                     break;
                 case ("rrrrrrGrrrrrrG"):
-                    defaultTime += wnes3;
+                    defaultTime += nesw3;
                     defaultTime -= we3;
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
@@ -227,7 +227,7 @@ public class ListenerBehavior extends CyclicBehaviour {
                     }
                     break;
                 case ("rrrGrrrrrrGrrr"):
-                    defaultTime += nesw3;
+                    defaultTime += wnes3;
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_CROSS_YELLOW.toString()));
