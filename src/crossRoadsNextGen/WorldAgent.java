@@ -16,7 +16,6 @@ public class WorldAgent extends Agent {
 
     static String sumo_bin = "c:/Program Files (x86)/DLR/Sumo/bin/sumo-gui.exe";
     static String config_file = "src/sumo_jade/simulation/config.sumo.cfg";
-//    static final String config_file = this.getclass()
     static String simfile;
     private SumoTraciConnection conn;
 

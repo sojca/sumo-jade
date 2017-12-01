@@ -156,11 +156,6 @@
         <legend showSizeLegend="1"/>
     </scheme>
     
-    <!-- 
-    <decals>
-    	<decal filename="dresden_hell.gif" centerX="413242.30060026" centerY="5652468.59866634" width="11136.00" height="5376.00" rotation="-1.00"/>
-
-	</decals>
-	-->
+    <decal filename="a.png" centerX="93" centerY="75" width="396" height="181" rotation="0.00"/>
     
 </viewsettings>

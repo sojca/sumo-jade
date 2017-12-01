@@ -25,7 +25,7 @@ public class TimestepsBehaviour extends CyclicBehaviour {
     private final String[] north2Directions = {"north_2_south_2"};
     private final String[] southDirections = {"south_north", "south_north", "south_south_2", "south_east", "south_east"};
     private final String[] south2Directions = {"south_2_north", "south_2_north", "south_2_north_2", "south_2_east", "south_2_east"};
-    private final String[] eastDirections = {"east_north", "east_north", "east_north_2", "east_south", "east_south_2"};
+    private final String[] eastDirections = {"east_north", "east_north", "east_north", "east_north_2", "east_south", "east_south", "east_south_2"};
     private final Random rand = new Random();
     private int index = 0;
     private double jam = 1.7;

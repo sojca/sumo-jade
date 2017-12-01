@@ -50,12 +50,12 @@ public class ListenerBehavior extends CyclicBehaviour {
                         int eLane = (int) crossagent.getConn().do_job_get(Lane.getLastStepVehicleNumber("gneE4_1"));
 
                         double priN = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(n, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE2")));
-                        double priNLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(nLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE2_1")));
+                        double priNLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(nLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE2_1")) * 2);
                         double priS = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(s, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE7")));
                         double priW = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(w, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE0")));
-                        double priWLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(wLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE0_1")));
+                        double priWLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(wLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE0_1")) * 2);
                         double priE = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(e, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE4")));
-                        double priELane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(eLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE4_1")));
+                        double priELane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(eLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE4_1")) * 2);
 
                         ns1 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
                         ne1 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priNLane, 4);
@@ -74,16 +74,16 @@ public class ListenerBehavior extends CyclicBehaviour {
                         int eLane = (int) crossagent.getConn().do_job_get(Lane.getLastStepVehicleNumber("gneE10_1"));
 
                         double priN = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(n, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE15")));
-                        double priNLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(nLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE15_0")));
+                        double priNLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(nLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE15_0")) * 2);
                         double priS = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(s, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE12")));
-                        double priSLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(sLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE12_1")));
+                        double priSLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(sLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE12_1")) * 2);
                         double priW = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(w, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE5")));
-                        double priWLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(wLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE5_1")));
+                        double priWLane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(wLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE5_1")) * 2);
                         double priE = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(e, (double) crossagent.getConn().do_job_get(Edge.getWaitingTime("gneE10")));
-                        double priELane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(eLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE10_1")));
+                        double priELane = crossagent.getFuzzyController().InterferenceAndDefuzzyPriority(eLane * 2, (double) crossagent.getConn().do_job_get(Lane.getWaitingTime("gneE10_1")) * 2);
 
-                        ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
-                        nesw3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priNLane, priSLane);
+                        ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priS, priS);
+                        nesw3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priSLane, priSLane);
                         we3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
                         wnes3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priWLane, priELane);
                     }
@@ -120,8 +120,8 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case (J1Cons.NORTH_SOUTH_CROSS_GREEN):
                     defaultTime += ne1;
-                    defaultTime -= we1;
-                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
+  //                  defaultTime -= we1 / 4.0;
+                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 80) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.NORTH_SOUTH_CROSS_YELLOW));
                         defaultTime = 20;
@@ -156,8 +156,8 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case (J1Cons.WEST_EAST_CROSS_GREEN):
                     defaultTime += wnes1;
-                    defaultTime -= ns1;
-                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
+ //                    defaultTime -= ns1 / 4.0;
+                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 80) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.WEST_EAST_CROSS_YELLOW));
                         defaultTime = 20;
@@ -192,8 +192,8 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case (J3Cons.NORTH_SOUTH_CROSS_GREEN):
                     defaultTime += nesw3;
-                    defaultTime -= we3;
-                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
+     //                defaultTime -= we3 / 4.0;
+                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 80) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.NORTH_SOUTH_CROSS_YELLOW));
                         defaultTime = 20;
@@ -225,11 +225,9 @@ public class ListenerBehavior extends CyclicBehaviour {
                     break;
                 case (J3Cons.WEST_EAST_CROSS_GREEN):
                     defaultTime += wnes3;
-                    System.out.println(defaultTime + "   " + wnes3);
-                    defaultTime -= ns3;
-                    System.out.println(defaultTime + "   " + ns3);
+              //       defaultTime -= ns3 / 4.0;
 
-                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
+                    if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 80) {
                         crossagent.resetDuration();
                         crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.WEST_EAST_CROSS_YELLOW));
                         defaultTime = 20;
