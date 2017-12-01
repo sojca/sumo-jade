@@ -156,6 +156,6 @@
         <legend showSizeLegend="1"/>
     </scheme>
     
-    <decal filename="a.png" centerX="93" centerY="75" width="396" height="181" rotation="0.00"/>
+    <decal filename="a.gif" centerX="93" centerY="75" width="396" height="181" rotation="0.00"/>
     
 </viewsettings>
