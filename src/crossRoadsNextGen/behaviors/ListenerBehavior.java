@@ -84,7 +84,7 @@ public class ListenerBehavior extends CyclicBehaviour {
 
                         ns3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priN, priS);
                         nesw3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priNLane, priSLane);
-                        we3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW , priE);
+                        we3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priW, priE);
                         wnes3 = crossagent.getFuzzyController().InterferenceAndDefuzzyTime(priWLane, priELane);
                     }
                 }
@@ -99,43 +99,42 @@ public class ListenerBehavior extends CyclicBehaviour {
     }
 
     private void updateLights(double ns1, double we1, double ne1, double wnes1, double ns3, double we3, double nesw3, double wnes3) throws Exception {
-        System.out.println("UPDATED");
-        if ("gneJ1".equals(crossagent.getId())) {
-            switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ1"))) {
-                case ("rrGGrrrrGg"):
+        if (J1Cons.ID.equals(crossagent.getId())) {
+            switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState(J1Cons.ID))) {
+                case (J1Cons.NORTH_SOUTH_GREEN):
                     defaultTime += ns1;
                     defaultTime -= we1;
 
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 900) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.NORTH_SOUTH_YELLOW));
                         defaultTime = 20;
                     }
                     break;
-                case ("rryyrrrryg"):
+                case (J1Cons.NORTH_SOUTH_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_CROSS_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.NORTH_SOUTH_CROSS_GREEN));
                         defaultTime = 60;
                     }
                     break;
-                case ("rrrrrrrrrG"):
+                case (J1Cons.NORTH_SOUTH_CROSS_GREEN):
                     defaultTime += ne1;
                     defaultTime -= we1;
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_CROSS_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.NORTH_SOUTH_CROSS_YELLOW));
                         defaultTime = 20;
                     }
                     break;
-                case ("rrrrrrrrry"):
+                case (J1Cons.NORTH_SOUTH_CROSS_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.WEST_EAST_GREEN));
                         defaultTime = 330;
                     }
                     break;
-                case ("GgrrGGGgrr"):
+                case (J1Cons.WEST_EAST_GREEN):
                     //            defaultTime += rules_we_gnej1[fuzzy_set[0]][fuzzy_set[1]];
                     defaultTime += we1;
                     defaultTime -= ns1;
@@ -143,88 +142,88 @@ public class ListenerBehavior extends CyclicBehaviour {
 
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 900) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.WEST_EAST_YELLOW));
                         defaultTime = 20;
                     }
                     break;
 
-                case ("ygrryyygrr"):
+                case (J1Cons.WEST_EAST_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_CROSS_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.WEST_EAST_CROSS_GREEN));
                         defaultTime = 60;
                     }
                     break;
-                case ("rGrrrrrGrr"):
+                case (J1Cons.WEST_EAST_CROSS_GREEN):
                     defaultTime += wnes1;
                     defaultTime -= ns1;
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.WEST_EAST_CROSS_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.WEST_EAST_CROSS_YELLOW));
                         defaultTime = 20;
                     }
                     break;
-                case ("ryrrrrryrr"):
+                case (J1Cons.WEST_EAST_CROSS_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ1", J1Constraints.NORTH_SOUTH_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J1Cons.ID, J1Cons.NORTH_SOUTH_GREEN));
                         defaultTime = 330;
                     }
                     break;
             }
 
-        } else if ("gneJ3".equals(crossagent.getId())) {
-            switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState("gneJ3"))) {
-                case ("rrrrGGgrrrrGGg"):
+        } else if (J3Cons.ID.equals(crossagent.getId())) {
+            switch ((String) crossagent.getConn().do_job_get(Trafficlight.getRedYellowGreenState(J3Cons.ID))) {
+                case (J3Cons.NORTH_SOUTH_GREEN):
                     defaultTime += ns3;
                     defaultTime -= we3;
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 900) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.NORTH_SOUTH_YELLOW));
                         defaultTime = 20;
                     }
                     break;
-                case ("rrrryygrrrryyg"):
+                case (J3Cons.NORTH_SOUTH_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.NORTH_SOUTH_CROSS_GREEN));
                         defaultTime = 60;
                     }
                     break;
-                case ("rrrrrrGrrrrrrG"):
+                case (J3Cons.NORTH_SOUTH_CROSS_GREEN):
                     defaultTime += nesw3;
                     defaultTime -= we3;
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_CROSS_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.NORTH_SOUTH_CROSS_YELLOW));
                         defaultTime = 20;
                     }
                     break;
-                case ("rrrrrryrrrrrry"):
+                case (J3Cons.NORTH_SOUTH_CROSS_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.WEST_EAST_GREEN));
                         defaultTime = 330;
                     }
                     break;
-                case ("GGGgrrrGGGgrrr"):
+                case (J3Cons.WEST_EAST_GREEN):
                     defaultTime += we3;
                     defaultTime -= ns3;
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 900) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.WEST_EAST_YELLOW));
                         defaultTime = 20;
                     }
                     break;
 
-                case ("yyygrrryyygrrr"):
+                case (J3Cons.WEST_EAST_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_CROSS_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.WEST_EAST_CROSS_GREEN));
                         defaultTime = 60;
                     }
                     break;
-                case ("rrrGrrrrrrGrrr"):
+                case (J3Cons.WEST_EAST_CROSS_GREEN):
                     defaultTime += wnes3;
                     System.out.println(defaultTime + "   " + wnes3);
                     defaultTime -= ns3;
@@ -232,14 +231,14 @@ public class ListenerBehavior extends CyclicBehaviour {
 
                     if (crossagent.getDuration() > defaultTime || crossagent.getDuration() > 120) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.WEST_EAST_CROSS_YELLOW.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.WEST_EAST_CROSS_YELLOW));
                         defaultTime = 20;
                     }
                     break;
-                case ("rrryrrrrrryrrr"):
+                case (J3Cons.WEST_EAST_CROSS_YELLOW):
                     if (crossagent.getDuration() > defaultTime) {
                         crossagent.resetDuration();
-                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState("gneJ3", J3Constraints.NORTH_SOUTH_GREEN.toString()));
+                        crossagent.getConn().do_job_set(Trafficlight.setRedYellowGreenState(J3Cons.ID, J3Cons.NORTH_SOUTH_GREEN));
                         defaultTime = 330;
                     }
                     break;

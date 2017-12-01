@@ -3,14 +3,11 @@ package crossRoadsNextGen;
 import crossRoadsNextGen.behaviors.TimestepsBehaviour;
 import de.tudresden.sumo.cmd.Trafficlight;
 import de.tudresden.ws.container.SumoStringList;
-import de.tudresden.ws.container.SumoTLSPhase;
-import de.tudresden.ws.container.SumoTLSProgram;
 import it.polito.appeal.traci.SumoTraciConnection;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import java.io.File;
 
 /**
  * World agent managing crossroads and simulation time steps
@@ -27,16 +24,12 @@ public class WorldAgent extends Agent {
 
     @Override
     protected void setup() {
-//        Object[] args = getArguments();
-//        if (args.length > 0) {
-//            config_file = args[0].toString();
-//        }
 
         AgentContainer c = getContainerController();
         try {
             conn = new SumoTraciConnection(sumo_bin, config_file);
             conn.addOption("step-length", "0.1");  // timestep 100 ms
-            
+
             // Load routes and initialize the simulation
             conn.runServer();
             conn.do_timestep();

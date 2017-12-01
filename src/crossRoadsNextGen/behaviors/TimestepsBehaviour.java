@@ -44,7 +44,6 @@ public class TimestepsBehaviour extends CyclicBehaviour {
             getService();
             informAgents(simtime);
             waitForResponses();
-            System.out.println("SYNCED");
         } catch (Exception ex) {
             Logger.getLogger(TimestepsBehaviour.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,11 +129,11 @@ public class TimestepsBehaviour extends CyclicBehaviour {
             MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.INFORM);
             ACLMessage msg = myAgent.receive(mt);
             if (msg != null) {
-                count ++;
+                count++;
             }
         }
     }
-    
+
     public double getTime() {
         return index;
     }
